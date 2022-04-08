@@ -30,6 +30,6 @@ namespace InventoryManagement.Models
         [Compare("Password", ErrorMessage = "The Password and Confirm Password do not match.")]
         public string ConfirmPassword { get; set; }
         [Required]
-        public string? RoleId { get; set; }
+        public string RoleId { get; set; }
     }
 }

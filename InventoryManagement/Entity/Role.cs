@@ -8,6 +8,7 @@ namespace InventoryManagement.Entity
     {
         [Key]
         public string RoleId { get; set; }
+        [Required(ErrorMessage = "Please Enter Role Name")]
         public string RoleName { get; set; }
     }
 }

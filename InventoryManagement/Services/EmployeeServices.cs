@@ -138,6 +138,19 @@ namespace InventoryManagement.Services
             //    editEmployee.Email = model.Email,
             //}
             //_context.Employee.Update(editEmployee);
+            var editEmployee = _context.Employee.Include(x => x.Person).Include(x => x.Role).SingleOrDefault(x => x.EmployeeId == Id);
+            if (editEmployee != null)
+            {
+                editEmployee.Person.FirstName = model.FirstName;
+                editEmployee.Person.MiddleName = model.MiddleName == null ? "" : model.MiddleName;
+                editEmployee.Person.LastName = model.LastName;
+                editEmployee.Person.ContactNo = model.ContactNo;
+                editEmployee.Person.Address = model.Address;
+                editEmployee.Person.GenderListItemId = model.GenderListItemId;
+                editEmployee.Email = model.Email;
+                editEmployee.RoleId = model.RoleId;
+            }
+            _context.Employee.Update(editEmployee);
             _context.SaveChanges();
         }
     }

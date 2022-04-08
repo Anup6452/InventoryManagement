@@ -9,15 +9,23 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/InventoryManagement.styles.css" asp-append-version="true" />
     <!-- Toaster Alert -->
-  @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-*@
 
+<!-- Theme style -->
+  @*<link rel="stylesheet" href="~/css/adminlte.min.css">*@
+
+  
 <div class="container">
     <div class="row">
+        
       <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
         <div class="card border-0 shadow rounded-3 my-5">
+            
           <div class="card-body p-4 p-sm-5">
+              <div class="text-center fs-3">
+                <a><b>Inventory</b>Management</a>
+              </div>
             <h5 class="card-title text-center mb-5 fw-light fs-5">Sign In</h5>
             @*@if(TempData["Message"]  !=null){
                 <h4 class="alert alert-primary">
@@ -57,15 +65,15 @@
   </div>
 
 
-  @*<script type="text/javascript">
+  <script type="text/javascript">
     $(document).ready(function () { 
         console.log(TempData["Message"]);
-       if(TempData["Message"]  !=null) {
+       if(TempData["Message"]  == "Success") {
           toastr.success('Password Changed Successfully');
        }
        else{ }
     });
-</script>*@
+</script>
 
 
   <script src="~/lib/jquery/dist/jquery.min.js"></script>

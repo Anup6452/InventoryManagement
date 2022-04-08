@@ -37,22 +37,27 @@ namespace InventoryManagement.Services
 
         public async Task<List<SelectListItem>> ListGender()
         {
-            var gender = await _context.ListItem.Where(x => x.ListItemCategoryId == "Cat-01").Select(x => new SelectListItem
+            //var gender = await _context.ListItem.Where(x => x.ListItemCategoryId == "Cat-01").Select(x => new SelectListItem
+            var genderList = await (from gender in _context.ListItem
+                                   where gender.ListItemCategoryId == "Cat-01"
+                                   select new SelectListItem
             {
-                Value = x.ListItemId,
-                Text = x.ListItemName
+                Value = gender.ListItemId,
+                Text = gender.ListItemName
             }).ToListAsync();
-            return gender;
+            return genderList;
         }
         
         public async Task<List<SelectListItem>> ListRole()
         {
-            var role = await _context.Role.Select(x => new SelectListItem
+            //var role = await _context.Role.Select(x => new SelectListItem
+            var roleList = await (from role in _context.Role 
+                             select new SelectListItem
             {
-                Value = x.RoleId,
-                Text = x.RoleName
+                Value = role.RoleId,
+                Text = role.RoleName
             }).ToListAsync();
-            return role;
+            return roleList;
         }
 
 
@@ -62,7 +67,8 @@ namespace InventoryManagement.Services
             {
                 try
                 {
-                    var roleId = _context.Role.Where(x => x.RoleName == "User").Select(x => x.RoleId).SingleOrDefault();
+                    //var roleId = _context.Role.Where(x => x.RoleName == "User").Select(x => x.RoleId).SingleOrDefault();
+                    //var roleId = from role in _context.Role where role.RoleName == model.RoleId select role;
                     Person person = new Person()
                     {
                         PersonId = Guid.NewGuid().ToString(),
@@ -79,7 +85,7 @@ namespace InventoryManagement.Services
                         PersonId = person.PersonId,
                         Email = model.Email,
                         Password = Hash.GetHash(model.Password),
-                        RoleId = roleId,
+                        RoleId = model.RoleId,
                     };
                     _context.Person.Add(person);
                     _context.Employee.Add(employee);
@@ -102,7 +108,10 @@ namespace InventoryManagement.Services
 
         public Employee ChangePassword(Employee employee)
         {
-            Employee updatePassword = _context.Employee.FirstOrDefault(e => e.EmployeeId == employee.EmployeeId);
+            //Employee updatePassword = _context.Employee.FirstOrDefault(e => e.EmployeeId == employee.EmployeeId);
+            Employee updatePassword = (from emp in _context.Employee
+                                       where emp.EmployeeId == employee.EmployeeId
+                                       select emp).FirstOrDefault();
             if (updatePassword != null)
             {
                 updatePassword.Password = employee.Password;

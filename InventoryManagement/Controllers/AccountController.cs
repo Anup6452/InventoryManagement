@@ -82,7 +82,9 @@ namespace InventoryManagement.Controllers
         public async Task<IActionResult> Register()
         {
             var genderList = await _accountServices.ListGender();
+            var roleList = await _accountServices.ListRole();
             ViewBag.Gender = genderList;
+            ViewBag.Role = roleList;
             return View();
         }
         [HttpPost]
@@ -94,7 +96,9 @@ namespace InventoryManagement.Controllers
                 return RedirectToAction("Login");
             }
             var genderList = await _accountServices.ListGender();
+            var roleList = await _accountServices.ListRole();
             ViewBag.Gender = genderList;
+            ViewBag.Role = roleList;
             return View(model);
         }
 
@@ -125,9 +129,8 @@ namespace InventoryManagement.Controllers
                 employee.Password = Hash.GetHash(model.ConfirmPassword);
                 var result = _accountServices.ChangePassword(employee);
                 await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                TempData["Message"] = "Password Changed Successfully.";
+                TempData["Message"] = "Success";
                 return RedirectToAction("Login", "Account");
-
             }
             return View(model);
         }
