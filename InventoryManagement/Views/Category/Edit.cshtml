@@ -1,0 +1,43 @@
+﻿@model CategoryVM;
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="Index">Category</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Update</li>
+    </ol>
+</nav>
+
+<div class="btn-group float-right mb-3">
+    <a asp-action="Index" class="btn btn-secondary">
+        Cancel
+    </a>
+</div>
+
+
+<form asp-action="Edit" asp-controller="Category" method="post" id="mainForm">
+    <div class="alert alert-danger" style="display:none" id="alertMessageGroup">
+        <div><span asp-validation-for="ListItemCategoryName" class="text-danger"></span></div>
+    </div>
+    <div class="card w-100">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group row">
+                        <div class="col-sm-4">
+                            <label>Category Name</label> <span class="text-danger">*</span>
+                        </div>
+                        <div class="col-sm-8">
+                            <input asp-for="ListItemCategoryName" class="form-control mb-2 mr-sm-2" id="role_name" placeholder="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @Html.AntiForgeryToken()
+            <input type="submit" id="submit" class="btn btn-primary mr-2" value="Update">
+        </div>
+    </div>
+</form>

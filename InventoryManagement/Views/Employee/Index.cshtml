@@ -1,0 +1,93 @@
+﻿@model IEnumerable<EmployeeVM>
+  
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" /> 
+
+
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Item List</li>
+    </ol>
+</nav>
+ @*@using (Html.BeginForm()){    
+         <p> Title: @Html.TextBox("searchValue")   
+         <input type="submit" value="Filter" />
+         <a asp-action="Index">Full List</a>
+         </p> 
+         
+        }*@ 
+
+    
+
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+           
+            <div class="card card-secondary">
+              <div class="card-header">
+                <h3 class="card-title">Employee List</h3>
+                <div class="btn-group float-right">
+                    <a asp-controller="Employee" asp-action="CreateEmployee" class="btn btn-primary">
+                        Add Employee
+                    </a>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="employeeDataTable" class="table table-bordered table-striped table-condensed">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Contact No</th>
+                            <th>Address</th>
+                            <th>Gender</th>
+                            <th>Password</th>
+                            <th>Role</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+
+        <!-- Modal -->
+<div class="modal fade" id="delete-conformation"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="deleteconformation">
+    <div class="modal-dialog" style="width:501px !important;margin:0 auto;">
+        <div class="modal-content">
+            <div class="modal-header" style="background:#d9534f;color:white;">
+                <h4 class="modal-title" id="delete-conformation">
+                    Delete Confirmation
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <span>
+                                Are you sure you want to delete?
+                            </span>
+                            <span id="idToDelete" style="display:none;">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <input type="submit" class="btn btn-danger" value="Confirm" onclick="deleteData()" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
