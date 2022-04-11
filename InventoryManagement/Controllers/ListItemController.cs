@@ -49,7 +49,7 @@ namespace InventoryManagement.Controllers
                 var jsonData = new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data };
                 return Ok(jsonData);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -62,6 +62,7 @@ namespace InventoryManagement.Controllers
             return View();
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(ListVM model)
         {
             _listItemServices.CreateItem(model);
@@ -76,6 +77,7 @@ namespace InventoryManagement.Controllers
             return View(editCategory);
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Edit(string Id, ListVM model)
         {
             _listItemServices.EditItem(Id, model);

@@ -27,11 +27,11 @@
                 <a><b>Inventory</b>Management</a>
               </div>
             <h5 class="card-title text-center mb-5 fw-light fs-5">Sign In</h5>
-            @*@if(TempData["Message"]  !=null){
+            @if(TempData["Message"]  !=null){
                 <h4 class="alert alert-primary">
-                    @TempData["message"]
+                    @TempData["Message"]
                 </h4>
-               }*@
+               }
                
             <form asp-action="Login" asp-controller="Account" method="post">
                 <p class = "text-danger">@ViewBag.Error</p>
@@ -52,6 +52,7 @@
                   Remember password
                 </label>
               </div>
+              @Html.AntiForgeryToken()
               <div class="d-grid">
                 <button class="btn btn-primary btn-login text-uppercase fw-bold" type="submit">Sign
                   in</button>

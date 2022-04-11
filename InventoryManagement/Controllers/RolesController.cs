@@ -55,6 +55,7 @@ namespace InventoryManagement.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(RoleVM model)
         {
             if (ModelState.IsValid)
@@ -79,6 +80,7 @@ namespace InventoryManagement.Controllers
         }
         
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Edit(string Id, RoleVM model)
         {
             _rolesServices.EditRole(Id, model);

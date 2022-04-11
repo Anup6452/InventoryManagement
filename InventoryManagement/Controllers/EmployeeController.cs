@@ -47,7 +47,7 @@ namespace InventoryManagement.Controllers
                 var jsonData = new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data };
                 return Ok(jsonData);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -62,6 +62,7 @@ namespace InventoryManagement.Controllers
             return View();
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult CreateEmployee(EmpVM model)
         {
             if (ModelState.IsValid)
@@ -106,6 +107,7 @@ namespace InventoryManagement.Controllers
             return View(employee);
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult EditEmployee(string Id, EmpVM model)
         {
             ModelState.Remove("Password");

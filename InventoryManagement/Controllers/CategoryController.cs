@@ -49,7 +49,7 @@ namespace InventoryManagement.Controllers
                 var jsonData = new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data };
                 return Ok(jsonData);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -60,6 +60,7 @@ namespace InventoryManagement.Controllers
             return View();
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(CategoryVM model)
         {
             _categoryServices.CreateCategory(model);
@@ -72,6 +73,7 @@ namespace InventoryManagement.Controllers
             return View(editCategory);
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Edit(string Id, CategoryVM model)
         {
             _categoryServices.EditCategory(Id, model);

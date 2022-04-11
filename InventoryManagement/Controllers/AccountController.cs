@@ -32,7 +32,8 @@ namespace InventoryManagement.Controllers
             return User.Identity is not null && User.Identity.IsAuthenticated ? RedirectToAction("Index", "Home") : View();
         }
         [HttpPost]
-        public async Task<IActionResult> Login(LoginVM model)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginVM model, string? ReturnUrl)
         {
 
             if (ModelState.IsValid)
@@ -66,7 +67,15 @@ namespace InventoryManagement.Controllers
                     CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(claimsIdentity),
                     authProperties);
-                return RedirectToAction("Index", "Home");
+                if (!string.IsNullOrEmpty(ReturnUrl))
+                {
+                    return Redirect(ReturnUrl);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                
             }
 
             // Something failed. Redisplay the form.
@@ -88,6 +97,7 @@ namespace InventoryManagement.Controllers
             return View();
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterVM model)
         {
             if (ModelState.IsValid)
@@ -114,6 +124,7 @@ namespace InventoryManagement.Controllers
         }
         
         [HttpPost][Authorize]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePassword(ChangePasswordVM model)
         {
             if (ModelState.IsValid)
@@ -129,7 +140,7 @@ namespace InventoryManagement.Controllers
                 employee.Password = Hash.GetHash(model.ConfirmPassword);
                 var result = _accountServices.ChangePassword(employee);
                 await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                TempData["Message"] = "Success";
+                TempData["Message"] = "Password Successfully Changed";
                 return RedirectToAction("Login", "Account");
             }
             return View(model);
