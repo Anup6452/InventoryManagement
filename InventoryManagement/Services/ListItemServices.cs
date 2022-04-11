@@ -71,16 +71,7 @@ namespace InventoryManagement.Services
             return deleteItem;
         }
 
-        public async Task<List<SelectListItem>> ListCategory()
-        {
-            //var categoryList = _context.Category.Select(x => new SelectListItem
-            var categoryList = await (from category in _context.Category select new SelectListItem
-            {
-                Value = category.ListItemCategoryId,
-                Text = category.ListItemCategoryName
-            }).ToListAsync();
-            return categoryList;
-        }
+        
 
     }
 }

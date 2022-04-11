@@ -14,6 +14,7 @@ namespace InventoryManagement.Controllers
         private readonly InventoryDBContext _context;
         private readonly IAccountServices _accountServices;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IListServices _listServices;
 
         //private readonly UserManager<IdentityUser> _userManager;
         //private readonly SignInManager<IdentityUser> _signInManager;
@@ -21,21 +22,24 @@ namespace InventoryManagement.Controllers
         //_userManager = userManager;
         //_signInManager = signInManager;
 
-        public AccountController(InventoryDBContext context, IAccountServices accountServices, IHttpContextAccessor httpContextAccessor)
+        public AccountController(InventoryDBContext context, IAccountServices accountServices, 
+            IHttpContextAccessor httpContextAccessor, IListServices listServices)
         {
             _context = context;
             _accountServices = accountServices;
             _httpContextAccessor = httpContextAccessor;
+            _listServices = listServices;
         }
-        public IActionResult login()
+        public IActionResult login([FromQuery]string? ReturnUrl)
         {
+
             return User.Identity is not null && User.Identity.IsAuthenticated ? RedirectToAction("Index", "Home") : View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginVM model, string? ReturnUrl)
+        public async Task<IActionResult> Login(LoginVM model, [FromQuery] string? ReturnUrl)
         {
-
+            //var returnUrl = HttpContext.Request.Query["ReturnUrl"].ToString();
             if (ModelState.IsValid)
             {
                 var user = await _accountServices.AuthenticateUser(model.Email, model.Password);
@@ -67,6 +71,7 @@ namespace InventoryManagement.Controllers
                     CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(claimsIdentity),
                     authProperties);
+
                 if (!string.IsNullOrEmpty(ReturnUrl))
                 {
                     return Redirect(ReturnUrl);
@@ -81,7 +86,8 @@ namespace InventoryManagement.Controllers
             // Something failed. Redisplay the form.
             return View();
         }
-        
+        [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(
@@ -90,8 +96,8 @@ namespace InventoryManagement.Controllers
         }
         public async Task<IActionResult> Register()
         {
-            var genderList = await _accountServices.ListGender();
-            var roleList = await _accountServices.ListRole();
+            var genderList = await _listServices.ListGender();
+            var roleList = await _listServices.ListRole();
             ViewBag.Gender = genderList;
             ViewBag.Role = roleList;
             return View();
@@ -105,8 +111,8 @@ namespace InventoryManagement.Controllers
                 _accountServices.Register(model);
                 return RedirectToAction("Login");
             }
-            var genderList = await _accountServices.ListGender();
-            var roleList = await _accountServices.ListRole();
+            var genderList = await _listServices.ListGender();
+            var roleList = await _listServices.ListRole();
             ViewBag.Gender = genderList;
             ViewBag.Role = roleList;
             return View(model);
@@ -117,7 +123,7 @@ namespace InventoryManagement.Controllers
         {
             return Json(_accountServices.IfEmailExists(Email));
         }
-
+        [Authorize]
         public IActionResult ChangePassword()
         {
             return View();

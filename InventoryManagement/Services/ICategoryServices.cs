@@ -7,11 +7,8 @@ namespace InventoryManagement.Services
     {
         Task<List<CategoryVM>> ListCategory();
         void CreateCategory(CategoryVM model);
-
         Task<CategoryVM> GetCategoryToEdit(string Id);
-
         void EditCategory(string Id, CategoryVM model);
-
         ListItemCategory DeleteCategory(string Id);
     }
 }

@@ -35,31 +35,6 @@ namespace InventoryManagement.Services
             return employee;
         }
 
-        public async Task<List<SelectListItem>> ListGender()
-        {
-            //var gender = await _context.ListItem.Where(x => x.ListItemCategoryId == "Cat-01").Select(x => new SelectListItem
-            var genderList = await (from gender in _context.ListItem
-                                   where gender.ListItemCategoryId == "Cat-01"
-                                   select new SelectListItem
-            {
-                Value = gender.ListItemId,
-                Text = gender.ListItemName
-            }).ToListAsync();
-            return genderList;
-        }
-        
-        public async Task<List<SelectListItem>> ListRole()
-        {
-            //var role = await _context.Role.Select(x => new SelectListItem
-            var roleList = await (from role in _context.Role 
-                             select new SelectListItem
-            {
-                Value = role.RoleId,
-                Text = role.RoleName
-            }).ToListAsync();
-            return roleList;
-        }
-
 
         public void Register(RegisterVM model)
         {

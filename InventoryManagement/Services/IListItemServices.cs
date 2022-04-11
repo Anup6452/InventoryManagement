@@ -11,6 +11,5 @@ namespace InventoryManagement.Services
         Task<ListVM> GetItemToEdit(string Id);
         void EditItem(string Id, ListVM model);
         ListItem DeleteItem(string Id);
-        Task<List<SelectListItem>> ListCategory();
     }
 }

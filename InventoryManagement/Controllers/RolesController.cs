@@ -18,6 +18,7 @@ namespace InventoryManagement.Controllers
             _context = context;
             _rolesServices = rolesServices;
         }
+        [Authorize]
         public IActionResult Index()
         {
             //var roles = _rolesServices.GetRoles();
@@ -86,7 +87,7 @@ namespace InventoryManagement.Controllers
             _rolesServices.EditRole(Id, model);
             return RedirectToAction("Index");
         }
-
+        [HttpPost]
         public IActionResult Delete(string Id)
         {
             Role roleToDelete = _rolesServices.DeleteRole(Id);

@@ -1,4 +1,5 @@
-﻿using InventoryManagement.Models;
+﻿using InventoryManagement.Entity;
+using InventoryManagement.Models;
 using InventoryManagement.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,10 +10,12 @@ namespace InventoryManagement.Controllers
     public class EmployeeController : Controller
     {
         private readonly IEmployeeServices _employeeServices;
+        private readonly IListServices _listServices;
 
-        public EmployeeController(IEmployeeServices employeeServices)
+        public EmployeeController(IEmployeeServices employeeServices, IListServices listServices)
         {
             _employeeServices = employeeServices;
+            _listServices = listServices;
         }
         public IActionResult Index()
         {
@@ -55,23 +58,23 @@ namespace InventoryManagement.Controllers
 
         public IActionResult CreateEmployee()
         {
-            var genderList = _employeeServices.ListGender();
-            var roleList = _employeeServices.ListRole();
+            var genderList = _listServices.ListGender();
+            var roleList = _listServices.ListRole();
             ViewBag.Gender = genderList;
             ViewBag.Role = roleList;
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateEmployee(EmpVM model)
+        public async Task<IActionResult> CreateEmployee(EmpVM model)
         {
             if (ModelState.IsValid)
             {
                 _employeeServices.CreateEmployee(model);
                 return RedirectToAction("Index");
             }
-            var genderList = _employeeServices.ListGender();
-            var roleList = _employeeServices.ListRole();
+            var genderList = await _listServices.ListGender();
+            var roleList = await _listServices.ListRole();
             ViewBag.Gender = genderList;
             ViewBag.Role = roleList;
             return View();
@@ -96,12 +99,12 @@ namespace InventoryManagement.Controllers
             
         }
 
-        public IActionResult EditEmployee(string Id)
+        public async Task<IActionResult> EditEmployee(string Id)
         {
             
             var employee = _employeeServices.GetEmployeeToEdit(Id);
-            var genderList = _employeeServices.ListGender();
-            var roleList = _employeeServices.ListRole();
+            var genderList = await _listServices.ListGender();
+            var roleList = await _listServices.ListRole();
             ViewBag.Gender = genderList;
             ViewBag.Role = roleList;
             return View(employee);
@@ -118,6 +121,17 @@ namespace InventoryManagement.Controllers
                 return RedirectToAction("Index");
             }
             return RedirectToAction("EditEmployee");
+        }
+
+        [HttpPost]
+        public IActionResult DeleteEmployee(string Id)
+        {
+            Employee employeeToDelete = _employeeServices.DeleteEmployee(Id);
+            if (employeeToDelete != null)
+            {
+                return Json(new { success = true, message = "Deleted Successfully" });
+            }
+            return Json(new { success = false, message = "Something Went Wrong" });
         }
     }
 }

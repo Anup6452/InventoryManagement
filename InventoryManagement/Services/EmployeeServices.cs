@@ -34,31 +34,6 @@ namespace InventoryManagement.Services
             return employeeList;
         }
 
-        public List<SelectListItem> ListGender()
-        {
-            //var categoryList = _context.Category.Select(x => new SelectListItem
-            var genderList = (from item in _context.ListItem where item.ListItemCategory.ListItemCategoryName == "Gender"
-                                select new SelectListItem
-                                {
-                                    Value = item.ListItemId,
-                                    Text = item.ListItemName
-                                }).ToList();
-            return genderList;
-        }
-        
-        public List<SelectListItem> ListRole()
-        {
-            //var categoryList = _context.Category.Select(x => new SelectListItem
-            var roleList = (from role in _context.Role
-                                select new SelectListItem
-                                {
-                                    Value = role.RoleId,
-                                    Text = role.RoleName
-                                }).ToList();
-            return roleList;
-        }
-        
-
         public void CreateEmployee(EmpVM model)
         {
             using (var transaction = _context.Database.BeginTransaction())
@@ -152,6 +127,15 @@ namespace InventoryManagement.Services
             }
             _context.Employee.Update(editEmployee);
             _context.SaveChanges();
+        }
+
+        public Employee DeleteEmployee(string Id)
+        {
+            //var category = _context.Category.SingleOrDefault(x => x.ListItemCategoryId == Id);
+            var employee = (from emp in _context.Employee where emp.EmployeeId == Id select emp).SingleOrDefault();
+            _context.Remove(employee);
+            _context.SaveChanges();
+            return employee;
         }
     }
 }

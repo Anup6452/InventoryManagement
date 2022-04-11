@@ -15,6 +15,7 @@ namespace InventoryManagement.Controllers
         {
             _categoryServices = categoryServices;
         }
+        [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> Index()
         {
             var category = await _categoryServices.ListCategory();

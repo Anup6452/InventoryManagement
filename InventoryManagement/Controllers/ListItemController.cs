@@ -10,10 +10,12 @@ namespace InventoryManagement.Controllers
     public class ListItemController : Controller
     {
         private readonly IListItemServices _listItemServices;
+        private readonly IListServices _listServices;
 
-        public ListItemController(IListItemServices listItemServices)
+        public ListItemController(IListItemServices listItemServices, IListServices listServices)
         {
             _listItemServices = listItemServices;
+            _listServices = listServices;
         }
 
         public IActionResult Index()
@@ -57,7 +59,7 @@ namespace InventoryManagement.Controllers
 
         public async Task<IActionResult> Create()
         {
-            var categoryList = await _listItemServices.ListCategory();
+            var categoryList = await _listServices.ListCategory();
             ViewBag.Category = categoryList;
             return View();
         }
@@ -72,7 +74,7 @@ namespace InventoryManagement.Controllers
         public async Task<IActionResult> Edit(string Id)
         {
             var editCategory = await _listItemServices.GetItemToEdit(Id);
-            var categoryList = await _listItemServices.ListCategory();
+            var categoryList = await _listServices.ListCategory();
             ViewBag.Category = categoryList;
             return View(editCategory);
         }
