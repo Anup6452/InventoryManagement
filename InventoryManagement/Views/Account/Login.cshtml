@@ -4,6 +4,8 @@
 @model LoginVM
 @{
     Layout = null;
+    var returnUrl = ViewData["ReturnUrl"] as string;
+    returnUrl = System.Net.WebUtility.UrlEncode(returnUrl);
 }
 <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -33,7 +35,7 @@
                 </h4>
                }
                
-            <form asp-action="Login" asp-controller="Account" method="post">
+            <form action="/Account/Login?ReturnUrl=@returnUrl" method="post">
                 <p class = "text-danger">@ViewBag.Error</p>
               <div class="form-floating mb-3">
                 <input asp-for="Email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com" autofocus>

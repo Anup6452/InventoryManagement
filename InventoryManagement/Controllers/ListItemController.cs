@@ -3,6 +3,8 @@ using InventoryManagement.Models;
 using InventoryManagement.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using System.Linq.Dynamic.Core;
 
 namespace InventoryManagement.Controllers
 {
@@ -32,6 +34,7 @@ namespace InventoryManagement.Controllers
                 var start = Request.Form["start"].FirstOrDefault();
                 var length = Request.Form["length"].FirstOrDefault();
                 var sortColumn = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][name]"].FirstOrDefault();
+                //var sortColumn = (Request.Form["order[0][column]"]);
                 var sortColumnDirection = Request.Form["order[0][dir]"].FirstOrDefault();
                 var searchValue = Request.Form["search[value]"].FirstOrDefault();
                 int pageSize = length != null ? Convert.ToInt32(length) : 0;

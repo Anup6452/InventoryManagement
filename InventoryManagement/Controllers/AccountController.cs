@@ -30,9 +30,9 @@ namespace InventoryManagement.Controllers
             _httpContextAccessor = httpContextAccessor;
             _listServices = listServices;
         }
-        public IActionResult login([FromQuery]string? ReturnUrl)
+        public IActionResult login(string ReturnUrl)
         {
-
+            ViewData["ReturnUrl"] = ReturnUrl;
             return User.Identity is not null && User.Identity.IsAuthenticated ? RedirectToAction("Index", "Home") : View();
         }
         [HttpPost]

@@ -9,6 +9,7 @@ $(document).ready(function () {
     dataTable = $("#roleDatatable").DataTable({
         "processing": true,
         "serverSide": true,
+        "filter": true,
         "ajax": {
             "url": "/Roles/ListRole",
             "type": "POST",
@@ -16,7 +17,7 @@ $(document).ready(function () {
         },
         "columns": [
             { "data": "roleId", "visible": false },
-            { "data": "roleName", "autoWidth": true },
+            { "data": "roleName", "name": "Role Name", "autoWidth": true },
             {
                 "data": "roleId", "orderable": false, "render": function (data, type, row) {
 
@@ -44,15 +45,21 @@ $(document).ready(function () {
     dataTable = $("#itemDataTable").DataTable({
         "processing": true,
         "serverSide": true,
+        "filter": true,
         "ajax": {
             "url": "/ListItem/GetItemData",
             "type": "POST",
             "datatype": "json",
         },
+        "columnDefs": [{
+            "targets": [0],
+            "visible": false,
+            "searchable": false
+        }],
         "columns": [
             { "data": "listItemId", "visible": false },
             { "data": "listItemCategory.listItemCategoryName", "autoWidth": true },
-            { "data": "listItemName", "autoWidth": true },
+            { "data": "listItemName", "name": "Items", "autoWidth": true },
 
             {
                 "data": "listItemId", "orderable": false, "render": function (data, type, row) {
@@ -127,9 +134,11 @@ $(document).ready(function () {
             {
                 "data": "listItemId", "orderable": false, "render": function (data, type, row) {
                     var deleteUrl = "/Employee/DeleteEmployee/" + row.employeeId;
-
-                    return "<a href='/Employee/EditEmployee/" + row.employeeId + "'  class='btn btn-primary btn-sm' style='margin-left:5px' ><i class='far fa-edit'></i> Edit</a><a href='#' class='btn btn-danger btn-sm' style='margin-left:5px' onclick=deleteConfirm('" + deleteUrl + "'); ><i class='far fa-trash-alt'></i> Delete</a>";
-
+                    if (row.role.roleName != "SuperAdmin") {
+                        return "<a href='/Employee/EditEmployee/" + row.employeeId + "'  class='btn btn-primary btn-sm' style='margin-left:5px' ><i class='far fa-edit'></i> Edit</a><a href='#' class='btn btn-danger btn-sm' style='margin-left:5px' onclick=deleteConfirm('" + deleteUrl + "'); ><i class='far fa-trash-alt'></i> Delete</a>";
+                    } else {
+                        return "<a href='/Employee/EditEmployee/" + row.employeeId + "'  class='btn btn-primary btn-sm' style='margin-left:5px' ><i class='far fa-edit'></i> Edit</a>";
+                    }
                     //} 
 
                 }
